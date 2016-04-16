@@ -1,0 +1,157 @@
+---
+layout: default
+title: 字体测试
+---
+
+<script type="text/javascript" src="{{ "/script/jquery-2.2.3.min.js" | prepend: site.baseurl }}"></script>
+
+<script>
+var defaultTestText="Test 测试123中文ABC汉字abg(xyz)(w/o)（国果） This is a sample text. 这是·测试文本。①②⑨ 한국어 あさひ・テレビ／骨曜将葛，地玄系、片海示。";
+
+$(document).ready(function(){
+	$('#test-text').on("input",regeneratePlayground);
+	$('#test-text').val(defaultTestText);
+	$('#family-selector td').click(function(){
+		$('#family-selector td').removeClass("active");
+		$(this).addClass("active");
+		regeneratePlayground();
+	});
+	$('#lang-selector td').click(function(){
+		$('#lang-selector td').removeClass("active");
+		$(this).addClass("active");
+		regeneratePlayground();
+	});
+	$("#font-name1").on("input",regeneratePlayground);
+	$("#font-name2").on("input",regeneratePlayground);
+	$("#lang-code").on("input",regeneratePlayground);
+	regeneratePlayground();
+});
+
+function regeneratePlayground(){
+	var text=$('#test-text').val();
+	$('.playground').empty();
+	for (var i=1;i<=9;i++){
+		$('.playground').append('<p style="font-weight: '+i*100+';">'+text+'</p>');
+	}
+	if ($("#family-selector td.active").text()==$("#font-other1").text())
+		$(".playground").css("font-family",$("#font-name1").val());
+	else if ($("#family-selector td.active").text()==$("#font-other2").text())
+		$(".playground").css("font-family",$("#font-name2").val());
+	else
+		$(".playground").css("font-family",$("#family-selector td.active").text());
+	if ($("#lang-selector td.active").text()==$("#lang-other").text())
+		$(".playground").attr("lang",$("#lang-code").val());
+	else if ($("#lang-selector td.active").text()==$("#lang-no").text())
+		$('.playground').attr('lang',null);
+	else
+		$(".playground").attr("lang",$("#lang-selector td.active").text());
+}
+	
+</script>
+
+<style>
+.page-content .wrapper {
+	max-width: 100%;
+}
+div.control-panel {
+	width: 480px;
+	/* margin: auto; */
+	float: left;
+	line-height: 1.5em;
+	/* margin-bottom: 32px; */
+	margin: 0px 32px 32px 0px;
+}
+div.font-tester table {
+	width: 100%;
+	text-align: left;
+	border-collapse: collapse;
+	table-layout:fixed;
+}
+div.font-tester table td {
+	border: #828282 1px solid;
+	padding: 8px;
+}
+div.font-tester table td.active {
+	background-color: #2a7ae2;
+	color: #FFF;
+	border-color: #2a7ae2;
+}
+.playground p {
+	margin: auto;
+}
+@media screen and (max-width: 960px) {
+	div.control-panel {
+		width: 360px;
+	};
+}
+@media screen and (max-width: 640px) {
+	div.control-panel {
+		float: none;
+		margin-left: auto;
+		margin-right: auto;
+		margin-bottom: 32px;
+	}
+}
+@media screen and (max-width: 480px) {
+	div.control-panel {
+		width: auto;
+		margin: 0 .5em 0 .5em;
+	}
+}
+</style>
+
+<div class="font-tester">
+	<div class="control-panel">
+		<div>
+			<table class="selector" id="family-selector">
+				<tr><th colspan="3">Font family:</th></tr>
+				<tr>
+					<td>-apple-system</td>
+					<td>system</td>
+					<td class="active">sans-serif</td>
+				</tr>
+				<tr>
+					<td>Arial</td>
+					<td>Helvetica</td>
+					<td>serif</td>
+				</tr>
+				
+				<tr>
+					<td id="font-other1" colspan="3">Other 1: <input type="text" id="font-name1" width="6em" value="Microsoft YaHei"></input></td>
+				</tr>
+				<tr>
+					<td id="font-other2" colspan="3">Other 2: <input type="text" id="font-name2" width="6em" value="Source Han Sans"></input></td>
+				</tr>
+				
+			</table>
+			<br/>
+			<table class="selector" id="lang-selector">
+				<tr><th colspan="4">Language code:</th></tr>
+				<tr>
+					<td>en-US</td>
+					<td>zh-CN</td>
+					<td>zh-TW</td>
+					<td>zh-HK</td>
+				</tr>
+				<tr>
+					<td>zh-hans</td>
+					<td>zh-hant</td>
+					<td>ja-JP</td>
+					<td>ko-KR</td>
+				</tr>
+				<tr>
+					<td id="lang-no" class="active" colspan="2">Unspecified</td>
+					<td id="lang-other" colspan="2">Other: <input type="text" id="lang-code" width="6em"></input></td>
+				</td>
+			</table>
+			<br/>
+			<div><b>Test text:</b></div>
+			<textarea rows="3" style="width:100%" id="test-text"></textarea>
+		</div>
+	</div>
+	<div class="playground">
+	</div>
+</div>
+
+<div>
+</div>
