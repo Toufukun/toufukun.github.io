@@ -31,7 +31,7 @@ function regeneratePlayground(){
 	var text=$('#test-text').val();
 	$('.playground').empty();
 	for (var i=1;i<=9;i++){
-		$('.playground').append('<p style="font-weight: '+i*100+';">'+text+'</p>');
+		$('.playground').append('<p style="font-weight: '+i*100+';">'+i*100+' '+text+'</p>');
 	}
 	if ($("#family-selector td.active").text()==$("#font-other1").text())
 		$(".playground").css("font-family",$("#font-name1").val());

@@ -1,0 +1,175 @@
+---
+layout: default
+title: 字形测试
+---
+
+<script type="text/javascript" src="{{ "/script/jquery-2.2.3.min.js" | prepend: site.baseurl }}"></script>
+
+<script>
+var defaultTestText="曜骨房敢拔雪将冷葛地天";
+
+$(document).ready(function(){
+	$('#test-text').val(defaultTestText);
+	$('#test-text').on('input',refreshPlayground);
+	refreshPlayground();
+	$('.table-rnf td input[type="checkbox"]').on('click',refreshPlayground);
+	$('.table-rnf td input[type="text"]').on('input',refreshPlayground);
+	$('.table-rnf td button').on('click',function(){
+		$('.table-rnf td input[type="text"]').val($(this).text());
+		refreshPlayground();
+	});
+});
+
+function refreshPlayground(){
+	var pg=$('.playground');
+	pg.empty();
+	pg.append("<table></table>");
+
+	var pgt=$('.playground>table');
+	pgt.append("<tr></tr>");
+	var tr=pgt.find("tr:last-child");
+
+	$('.table-rnf td input[type="checkbox"]:checked').each(function(){
+		var lang=$(this).parent().text();
+		tr.append("<th>"+lang+"</th>");
+	});
+	
+	var text=$('#test-text').val();
+	for (var i=0;i<text.length;i++){
+		pgt.append("<tr></tr>");
+		tr=pgt.find("tr:last-child");
+		$('.table-rnf td input[type="checkbox"]:checked').each(function(){
+			var oLang=$(this).parent().text();
+			var font=$(this).parent().next().find('input').val();
+			var re=/(\w+-?\w+)\s*(\((\w+)\))?/;
+			var lang=oLang.match(re)[1];
+			var ot=oLang.match(re)[3];
+			if (lang=="Unspecified") lang="";
+			var td='<td lang="'+lang+'"';
+			td+=' style="font-family: '+font+';';
+			if (ot!="")
+				td+='font-feature-settings: \''+ot+'\' 1';
+			td+='"';
+			td+='>'+text[i]+'</td>';
+			tr.append(td);
+		});
+	}
+}
+</script>
+
+<style>
+.page-content .wrapper {
+	max-width: 100%;
+}
+div.control-panel {
+	width: 360px;
+	/* margin: auto; */
+	float: left;
+	line-height: 1.5em;
+	/* margin-bottom: 32px; */
+	margin: 0px 32px 32px 0px;
+}
+div.font-tester table {
+	text-align: left;
+	border-collapse: collapse;
+	table-layout:fixed;
+}
+.control-panel table {
+	width: 100%;
+}
+div.font-tester table td,th {
+	border: #828282 1px solid;
+	padding: 8px;
+}
+.playground table td {
+	font-size: 300%;
+}
+div.font-tester table td input[type="text"] {
+	width: 90%;
+}
+div.font-tester table td.active {
+	background-color: #2a7ae2;
+	color: #FFF;
+	border-color: #2a7ae2;
+}
+.playground p {
+	margin: auto;
+}
+.playground-container {
+	max-width: calc(100%-480px);
+	overflow: scroll;
+}
+@media screen and (max-width: 960px) {
+	div.control-panel {
+		width: 300px;
+	};
+}
+@media screen and (max-width: 640px) {
+	div.control-panel {
+		float: none;
+		margin-left: auto;
+		margin-right: auto;
+		margin-bottom: 32px;
+	}
+}
+@media screen and (max-width: 480px) {
+	div.control-panel {
+		width: 100%;
+		max-width: 300px;
+	}
+}
+</style>
+
+<div class="font-tester">
+	<div class="control-panel">
+		<div>
+			<div><b>Test text:</b></div>
+			<textarea rows="3" style="width:100%" id="test-text"></textarea>
+			<br/>
+			<div><b>Regions and fonts:</b></div>
+			<table class="table-rnf">
+				<tr>
+					<td><input type="checkbox" checked>zh-CN</input></td>
+					<td><input type="text" value="sans-serif"></input></td>
+				</tr>
+				<tr>
+					<td><input type="checkbox" checked>zh-TW</input></td>
+					<td><input type="text" value="sans-serif"></input></td>
+				</tr>
+				<tr>
+					<td><input type="checkbox" checked>zh-HK</input></td>
+					<td><input type="text" value="sans-serif"></input></td>
+				</tr>
+				<tr>
+					<td><input type="checkbox" checked>ja-JP (jp04)</input></td>
+					<td><input type="text" value="sans-serif"></input></td>
+				</tr>
+				<tr>
+					<td><input type="checkbox" checked>ja-JP (jp90)</input></td>
+					<td><input type="text" value="sans-serif"></input></td>
+				</tr>
+				<tr>
+					<td><input type="checkbox" checked>ko-KR</input></td>
+					<td><input type="text" value="sans-serif"></input></td>
+				</tr>
+				<tr>
+					<td><input type="checkbox" checked>Unspecified</input></td>
+					<td><input type="text" value="sans-serif"></input></td>
+				</tr>
+				<tr>
+					<td>Reset all fonts to...</td>
+					<td><button>sans-serif</button> <button>serif</button> <br/>
+					<button>-apple-system</button> <button>system</button></td>
+				</tr>
+			</table>
+			<br/>
+		</div>
+	</div>
+	<div class="playground-container">
+		<div class="playground">
+		</div>
+	</div>
+</div>
+
+<div>
+</div>
