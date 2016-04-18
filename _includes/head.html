@@ -11,4 +11,9 @@
   <link href='https://fonts.lug.ustc.edu.cn/css?family=Fira+Sans:400,700,400italic,700italic' rel='stylesheet' type='text/css'>
   <link rel="canonical" href="{{ page.url | replace:'index.html','' | prepend: site.baseurl | prepend: site.url }}">
   <link rel="alternate" type="application/rss+xml" title="{{ site.title }}" href="{{ "/feed.xml" | prepend: site.baseurl | prepend: site.url }}">
+  
+  <script type="text/javascript">
+	if ((!window.location.host.startsWith('localhost')) && (window.location.host.match!=null) &&  (window.location.host.match(/(127\.|10\.|172\.(1[6789]|2\d|3[01])\.|192\.168\.)/)==null) && (window.location.protocol != "https:"))
+		window.location.protocol = "https";
+  </script>
 </head>

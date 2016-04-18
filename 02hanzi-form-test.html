@@ -15,7 +15,7 @@ $(document).ready(function(){
 	$('.table-rnf td input[type="checkbox"]').on('click',refreshPlayground);
 	$('.table-rnf td input[type="text"]').on('input',refreshPlayground);
 	$('.table-rnf td button').on('click',function(){
-		$('.table-rnf td input[type="text"]').val($(this).text());
+		$('.table-rnf td input[type="text"].font-input').val($(this).text());
 		refreshPlayground();
 	});
 });
@@ -31,6 +31,7 @@ function refreshPlayground(){
 
 	$('.table-rnf td input[type="checkbox"]:checked').each(function(){
 		var lang=$(this).parent().text();
+		if (lang=="") lang=$(this).parent().find('input[type="text"]').val();
 		tr.append("<th>"+lang+"</th>");
 	});
 	
@@ -40,18 +41,24 @@ function refreshPlayground(){
 		tr=pgt.find("tr:last-child");
 		$('.table-rnf td input[type="checkbox"]:checked').each(function(){
 			var oLang=$(this).parent().text();
+			if (oLang=="")
+				oLang=$(this).parent().find('input[type="text"]').val();
 			var font=$(this).parent().next().find('input').val();
-			var re=/(\w+-?\w+)\s*(\((\w+)\))?/;
-			var lang=oLang.match(re)[1];
-			var ot=oLang.match(re)[3];
-			if (lang=="Unspecified") lang="";
-			var td='<td lang="'+lang+'"';
-			td+=' style="font-family: '+font+';';
-			if (ot!="")
-				td+='font-feature-settings: \''+ot+'\' 1';
-			td+='"';
-			td+='>'+text[i]+'</td>';
-			tr.append(td);
+			try {
+				var re=/(\w+(-\w+)?)\s*(\((\w+)\))?/;
+				var lang=oLang.match(re)[1];
+				var ot=oLang.match(re)[4];
+				if (lang=="Unspecified") lang="";
+				var td='<td lang="'+lang+'"';
+				td+=' style="font-family: '+font+';';
+				if (ot)
+					td+='font-feature-settings: \''+ot+'\' 1';
+				td+='"';
+				td+='>'+text[i]+'</td>';
+				tr.append(td);
+			} catch (err) {
+				console.log(err);
+			}
 		});
 	}
 }
@@ -84,8 +91,11 @@ div.font-tester table td,th {
 .playground table td {
 	font-size: 300%;
 }
-div.font-tester table td input[type="text"] {
+div.font-tester table td input.font-input {
 	width: 90%;
+}
+div.font-tester table td input.lang-input {
+	width: 75%;
 }
 div.font-tester table td.active {
 	background-color: #2a7ae2;
@@ -130,27 +140,35 @@ div.font-tester table td.active {
 			<table class="table-rnf">
 				<tr>
 					<td><input type="checkbox" checked>zh-CN</input></td>
-					<td><input type="text" value="sans-serif"></input></td>
+					<td><input class="font-input" type="text" value="sans-serif"></input></td>
 				</tr>
 				<tr>
 					<td><input type="checkbox" checked>zh-TW</input></td>
-					<td><input type="text" value="sans-serif"></input></td>
+					<td><input class="font-input" type="text" value="sans-serif"></input></td>
 				</tr>
 				<tr>
 					<td><input type="checkbox" checked>zh-HK</input></td>
-					<td><input type="text" value="sans-serif"></input></td>
+					<td><input class="font-input" type="text" value="sans-serif"></input></td>
 				</tr>
 				<tr>
 					<td><input type="checkbox" checked>ja-JP (jp04)</input></td>
-					<td><input type="text" value="sans-serif"></input></td>
+					<td><input class="font-input" type="text" value="sans-serif"></input></td>
 				</tr>
 				<tr>
 					<td><input type="checkbox" checked>ja-JP (jp90)</input></td>
-					<td><input type="text" value="sans-serif"></input></td>
+					<td><input class="font-input" type="text" value="sans-serif"></input></td>
 				</tr>
 				<tr>
 					<td><input type="checkbox" checked>ko-KR</input></td>
-					<td><input type="text" value="sans-serif"></input></td>
+					<td><input class="font-input" type="text" value="sans-serif"></input></td>
+				</tr>
+				<tr>
+					<td><input type="checkbox"></input><input class="lang-input" type="text" value="ja (jp83)"></input></td>
+					<td><input class="font-input" type="text" value="sans-serif"></input></td>
+				</tr>
+				<tr>
+					<td><input type="checkbox"></input><input class="lang-input" type="text" value="ja (jp78)"></input></td>
+					<td><input class="font-input" type="text" value="sans-serif"></input></td>
 				</tr>
 				<tr>
 					<td><input type="checkbox" checked>Unspecified</input></td>

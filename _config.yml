@@ -13,10 +13,16 @@ description: > # this means to ignore newlines until "baseurl:"
 copyright: >
   Copyright (C) 2015-2016 Toufukun, all rights reserved.
 baseurl: "" # the subpath of your site, e.g. /blog
-url: "http://toufukun.github.io" # the base hostname & protocol for your site
+url: "https://toufukun.github.io" # the base hostname & protocol for your site
+enforce_ssl: toufukun.github.io   # without any protocol
 twitter_username: toufukun233
 github_username: Toufukun
 sina_weibo_username: toufukun
 
 # Build settings
 markdown: kramdown
+highlighter: rouge
+
+kramdown:
+  input: GFM
+  syntax_highlighter: rouge
