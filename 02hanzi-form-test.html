@@ -10,13 +10,21 @@ var defaultTestText="曜骨房敢拔雪将冷葛地天";
 
 $(document).ready(function(){
 	$('#test-text').val(defaultTestText);
-	$('#test-text').on('input',refreshPlayground);
+	$(document).on('mousedown keydown',refreshPlayground);
+	$('#test-text').on('input select blur focus',refreshPlayground);
 	refreshPlayground();
 	$('.table-rnf td input[type="checkbox"]').on('click',refreshPlayground);
 	$('.table-rnf td input[type="text"]').on('input',refreshPlayground);
 	$('.table-rnf td button').on('click',function(){
 		$('.table-rnf td input[type="text"].font-input').val($(this).text());
 		refreshPlayground();
+	});
+	$(window).resize(resizeContainers);
+	$(window).scroll(function(){
+		if ($('.control-panel-container').css('position')=='absolute')
+			$('.control-panel').css('margin-top',-1*Math.min($(document).scrollTop(),$('header').height()));
+		else
+			$('.control-panel').css('margin-top','');
 	});
 });
 
@@ -35,7 +43,13 @@ function refreshPlayground(){
 		tr.append("<th>"+lang+"</th>");
 	});
 	
-	var text=$('#test-text').val();
+	var text="";
+	if ($('#test-text').is(':focus') && 'selectionStart' in $('#test-text')[0]){
+		text=$('#test-text').val().substring($('#test-text')[0].selectionStart, $('#test-text')[0].selectionEnd);
+		
+	}
+	if (!text || text=="")
+		text=$('#test-text').val();
 	for (var i=0;i<text.length;i++){
 		pgt.append("<tr></tr>");
 		tr=pgt.find("tr:last-child");
@@ -61,6 +75,18 @@ function refreshPlayground(){
 			}
 		});
 	}
+	resizeContainers();
+}
+function resizeContainers(){
+	if ($('.control-panel-container').css('position')=='absolute')
+		$('.control-panel-container').height(Math.max($('.control-panel-container').height(),$('.playground-container').height()));
+	else
+		$('.control-panel-container').height("");
+	$('.control-panel-container').width($('.control-panel').width()+32);
+	if ($('.control-panel-container').css('position')=='absolute')
+		$('.font-tester').height($('.control-panel-container').height());
+	else
+		$('.font-tester').height("");
 }
 </script>
 
@@ -71,7 +97,8 @@ function refreshPlayground(){
 div.control-panel {
 	width: 360px;
 	/* margin: auto; */
-	float: left;
+	/* float: left; */
+	position: fixed;
 	line-height: 1.5em;
 	/* margin-bottom: 32px; */
 	margin: 0px 32px 32px 0px;
@@ -87,6 +114,18 @@ div.font-tester table {
 div.font-tester table td,th {
 	border: #828282 1px solid;
 	padding: 8px;
+}
+div.playground-container {
+	margin-left: 392px;
+}
+div.control-panel-container {
+	overflow: hidden;
+	clip: rect(0, auto, auto, 0);
+	/* float: left; */
+	position: absolute;
+}
+div.font-tester {
+	overflow: hidden;
 }
 .playground table td {
 	font-size: 300%;
@@ -112,14 +151,26 @@ div.font-tester table td.active {
 @media screen and (max-width: 960px) {
 	div.control-panel {
 		width: 300px;
-	};
+	}
+	div.playground-container {
+		margin-left: 332px;
+	}
 }
 @media screen and (max-width: 640px) {
+	div.control-panel-container {
+		position: relative;
+		margin-left: auto;
+		margin-right: auto;
+	}
 	div.control-panel {
 		float: none;
+		position: relative;
 		margin-left: auto;
 		margin-right: auto;
 		margin-bottom: 32px;
+	}
+	div.playground-container{
+		margin-left: auto;
 	}
 }
 @media screen and (max-width: 480px) {
@@ -131,56 +182,58 @@ div.font-tester table td.active {
 </style>
 
 <div class="font-tester">
-	<div class="control-panel">
-		<div>
-			<div><b>Test text:</b></div>
-			<textarea rows="3" style="width:100%" id="test-text"></textarea>
-			<br/>
-			<div><b>Regions and fonts:</b></div>
-			<table class="table-rnf">
-				<tr>
-					<td><input type="checkbox" checked>zh-CN</input></td>
-					<td><input class="font-input" type="text" value="sans-serif"></input></td>
-				</tr>
-				<tr>
-					<td><input type="checkbox" checked>zh-TW</input></td>
-					<td><input class="font-input" type="text" value="sans-serif"></input></td>
-				</tr>
-				<tr>
-					<td><input type="checkbox" checked>zh-HK</input></td>
-					<td><input class="font-input" type="text" value="sans-serif"></input></td>
-				</tr>
-				<tr>
-					<td><input type="checkbox" checked>ja-JP (jp04)</input></td>
-					<td><input class="font-input" type="text" value="sans-serif"></input></td>
-				</tr>
-				<tr>
-					<td><input type="checkbox" checked>ja-JP (jp90)</input></td>
-					<td><input class="font-input" type="text" value="sans-serif"></input></td>
-				</tr>
-				<tr>
-					<td><input type="checkbox" checked>ko-KR</input></td>
-					<td><input class="font-input" type="text" value="sans-serif"></input></td>
-				</tr>
-				<tr>
-					<td><input type="checkbox"></input><input class="lang-input" type="text" value="ja (jp83)"></input></td>
-					<td><input class="font-input" type="text" value="sans-serif"></input></td>
-				</tr>
-				<tr>
-					<td><input type="checkbox"></input><input class="lang-input" type="text" value="ja (jp78)"></input></td>
-					<td><input class="font-input" type="text" value="sans-serif"></input></td>
-				</tr>
-				<tr>
-					<td><input type="checkbox" checked>Unspecified</input></td>
-					<td><input type="text" value="sans-serif"></input></td>
-				</tr>
-				<tr>
-					<td>Reset all fonts to...</td>
-					<td><button>sans-serif</button> <button>serif</button> <br/>
-					<button>-apple-system</button> <button>system</button></td>
-				</tr>
-			</table>
-			<br/>
+	<div class="control-panel-container">
+		<div class="control-panel">
+			<div>
+				<div><b>Test text:</b></div>
+				<textarea rows="3" style="width:100%" id="test-text"></textarea>
+				<br/>
+				<div><b>Regions and fonts:</b></div>
+				<table class="table-rnf">
+					<tr>
+						<td><input type="checkbox" checked>zh-CN</input></td>
+						<td><input class="font-input" type="text" value="sans-serif"></input></td>
+					</tr>
+					<tr>
+						<td><input type="checkbox" checked>zh-TW</input></td>
+						<td><input class="font-input" type="text" value="sans-serif"></input></td>
+					</tr>
+					<tr>
+						<td><input type="checkbox" checked>zh-HK</input></td>
+						<td><input class="font-input" type="text" value="sans-serif"></input></td>
+					</tr>
+					<tr>
+						<td><input type="checkbox" checked>ja-JP (jp04)</input></td>
+						<td><input class="font-input" type="text" value="sans-serif"></input></td>
+					</tr>
+					<tr>
+						<td><input type="checkbox" checked>ja-JP (jp90)</input></td>
+						<td><input class="font-input" type="text" value="sans-serif"></input></td>
+					</tr>
+					<tr>
+						<td><input type="checkbox" checked>ko-KR</input></td>
+						<td><input class="font-input" type="text" value="sans-serif"></input></td>
+					</tr>
+					<tr>
+						<td><input type="checkbox"></input><input class="lang-input" type="text" value="ja (jp83)"></input></td>
+						<td><input class="font-input" type="text" value="sans-serif"></input></td>
+					</tr>
+					<tr>
+						<td><input type="checkbox"></input><input class="lang-input" type="text" value="ja (jp78)"></input></td>
+						<td><input class="font-input" type="text" value="sans-serif"></input></td>
+					</tr>
+					<tr>
+						<td><input type="checkbox" checked>Unspecified</input></td>
+						<td><input class="font-input" type="text" value="sans-serif"></input></td>
+					</tr>
+					<tr>
+						<td>Reset all fonts to...</td>
+						<td><button>sans-serif</button> <button>serif</button> <br/>
+						<button>-apple-system</button> <button>system</button></td>
+					</tr>
+				</table>
+				<br/>
+			</div>
 		</div>
 	</div>
 	<div class="playground-container">
