@@ -15,8 +15,56 @@ $(document).ready(function(){
 	refreshPlayground();
 	$('.table-rnf td input[type="checkbox"]').on('click',refreshPlayground);
 	$('.table-rnf td input[type="text"]').on('input',refreshPlayground);
-	$('.table-rnf td button').on('click',function(){
+	$('.table-rnf td button:not([id])').on('click',function(){
 		$('.table-rnf td input[type="text"].font-input').val($(this).text());
+		refreshPlayground();
+	});
+	$('#shs-lang').on('click',function(){
+		$('#font-zh-cn').val('Source Han Sans SC');
+		$('#font-zh-tw').val('Source Han Sans TC');
+		$('#font-zh-hk').val('Source Han Sans TC');
+		$('#font-jp04').val('Source Han Sans');
+		$('#font-jp90').val('Source Han Sans');
+		$('#font-ko-kr').val('Source Han Sans K');
+		$('#font-custom1').val('Source Han Sans');
+		$('#font-custom2').val('Source Han Sans');
+		$('#font-unspec').val('Source Han Sans');
+		refreshPlayground();
+	});
+	$('#shs-region').on('click',function(){
+		$('#font-zh-cn').val('Source Han Sans CN');
+		$('#font-zh-tw').val('Source Han Sans TW');
+		$('#font-zh-hk').val('Source Han Sans HK');
+		$('#font-jp04').val('Source Han Sans JP');
+		$('#font-jp90').val('Source Han Sans JP');
+		$('#font-ko-kr').val('Source Han Sans KR');
+		$('#font-custom1').val('Source Han Sans JP');
+		$('#font-custom2').val('Source Han Sans JP');
+		$('#font-unspec').val('Source Han Sans JP');
+		refreshPlayground();
+	});
+	$('#win-sans').on('click',function(){
+		$('#font-zh-cn').val('Microsoft YaHei');
+		$('#font-zh-tw').val('Microsoft JhengHei');
+		$('#font-zh-hk').val('Microsoft JhengHei');
+		$('#font-jp04').val('Meiryo');
+		$('#font-jp90').val('Meiryo');
+		$('#font-ko-kr').val('Malgun Gothic');
+		$('#font-custom1').val('Meiryo');
+		$('#font-custom2').val('Meiryo');
+		$('#font-unspec').val('sans-serif');
+		refreshPlayground();
+	});
+	$('#win-serif').on('click',function(){
+		$('#font-zh-cn').val('SimSun');
+		$('#font-zh-tw').val('PMingLiU');
+		$('#font-zh-hk').val('PMingLiU');
+		$('#font-jp04').val('MS PMincho');
+		$('#font-jp90').val('MS PMincho');
+		$('#font-ko-kr').val('Batang');
+		$('#font-custom1').val('MS PMincho');
+		$('#font-custom2').val('MS PMincho');
+		$('#font-unspec').val('serif');
 		refreshPlayground();
 	});
 	$(window).resize(resizeContainers);
@@ -192,44 +240,50 @@ div.font-tester table td.active {
 				<table class="table-rnf">
 					<tr>
 						<td><input type="checkbox" checked>zh-CN</input></td>
-						<td><input class="font-input" type="text" value="sans-serif"></input></td>
+						<td><input class="font-input" id="font-zh-cn" type="text" value="sans-serif"></input></td>
 					</tr>
 					<tr>
 						<td><input type="checkbox" checked>zh-TW</input></td>
-						<td><input class="font-input" type="text" value="sans-serif"></input></td>
+						<td><input class="font-input" id="font-zh-tw" type="text" value="sans-serif"></input></td>
 					</tr>
 					<tr>
 						<td><input type="checkbox" checked>zh-HK</input></td>
-						<td><input class="font-input" type="text" value="sans-serif"></input></td>
+						<td><input class="font-input" id="font-zh-hk" type="text" value="sans-serif"></input></td>
 					</tr>
 					<tr>
 						<td><input type="checkbox" checked>ja-JP (jp04)</input></td>
-						<td><input class="font-input" type="text" value="sans-serif"></input></td>
+						<td><input class="font-input" id="font-jp04" type="text" value="sans-serif"></input></td>
 					</tr>
 					<tr>
 						<td><input type="checkbox" checked>ja-JP (jp90)</input></td>
-						<td><input class="font-input" type="text" value="sans-serif"></input></td>
+						<td><input class="font-input" id="font-jp90" type="text" value="sans-serif"></input></td>
 					</tr>
 					<tr>
 						<td><input type="checkbox" checked>ko-KR</input></td>
-						<td><input class="font-input" type="text" value="sans-serif"></input></td>
+						<td><input class="font-input" id="font-ko-kr" type="text" value="sans-serif"></input></td>
 					</tr>
 					<tr>
 						<td><input type="checkbox"></input><input class="lang-input" type="text" value="ja (jp83)"></input></td>
-						<td><input class="font-input" type="text" value="sans-serif"></input></td>
+						<td><input class="font-input" id="font-custom1" type="text" value="sans-serif"></input></td>
 					</tr>
 					<tr>
 						<td><input type="checkbox"></input><input class="lang-input" type="text" value="ja (jp78)"></input></td>
-						<td><input class="font-input" type="text" value="sans-serif"></input></td>
+						<td><input class="font-input" id="font-custom2" type="text" value="sans-serif"></input></td>
 					</tr>
 					<tr>
 						<td><input type="checkbox" checked>Unspecified</input></td>
-						<td><input class="font-input" type="text" value="sans-serif"></input></td>
+						<td><input class="font-input" id="font-unspec" type="text" value="sans-serif"></input></td>
 					</tr>
 					<tr>
-						<td>Reset all fonts to...</td>
-						<td><button>sans-serif</button> <button>serif</button> <br/>
-						<button>-apple-system</button> <button>system</button></td>
+						<td colspan="2">
+						<p><b>Reset all fonts to...</b></p>
+						<button>sans-serif</button> <button>serif</button>
+						<button>-apple-system</button> <button>system</button>
+						<button id="shs-lang">Source Han Sans (Lang)</button>
+						<button id="shs-region">Source Han Sans (Region)</button>
+						<button id="win-sans">Windows Default Sans</button>
+						<button id="win-serif">Windows Default Serif</button>
+						</td>
 					</tr>
 				</table>
 				<br/>
