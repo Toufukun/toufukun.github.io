@@ -21,6 +21,12 @@ $(document).ready(function(){
 		$(this).addClass("active");
 		regeneratePlayground();
 	});
+	$('#target-selector td').click(function(){
+		$('#target-selector td').removeClass("active");
+		$(this).addClass("active");
+		regeneratePlayground();
+	});
+	$("#target-selector td>input").on("input",regeneratePlayground);
 	$("#font-name1").on("input",regeneratePlayground);
 	$("#font-name2").on("input",regeneratePlayground);
 	$("#lang-code").on("input",regeneratePlayground);
@@ -30,8 +36,22 @@ $(document).ready(function(){
 function regeneratePlayground(){
 	var text=$('#test-text').val();
 	$('.playground').empty();
-	for (var i=1;i<=9;i++){
-		$('.playground').append('<p style="font-weight: '+i*100+';">'+i*100+' '+text+'</p>');
+	if ($('#test-font-sizes').hasClass('active')) {
+		var l=parseInt($('#font-size-start').val()), r=parseInt($('#font-size-end').val()), s=parseInt($('#font-size-step').val());
+		var f=$('#font-weight-fixed').val();
+		if (l<r){
+			for (var i=l;i<=r;i+=s){
+				$('.playground').append('<p style="font-size: '+i+'px; font-weight:'+f+';">'+i+' '+text+'</p>');
+			}
+		}
+	} else if ($('#test-font-weights').hasClass('active')){
+		var l=parseInt($('#font-weight-start').val()), r=parseInt($('#font-weight-end').val()), s=parseInt($('#font-weight-step').val());
+		var f=$('#font-size-fixed').val();
+		if (l<r){
+			for (var i=l;i<=r;i+=s){
+				$('.playground').append('<p style="font-weight: '+i+'; font-size:'+f+';">'+i+' '+text+'</p>');
+			}
+		}
 	}
 	if ($("#family-selector td.active").text()==$("#font-other1").text())
 		$(".playground").css("font-family",$("#font-name1").val());
@@ -79,6 +99,12 @@ div.font-tester table td.active {
 .playground p {
 	margin: auto;
 }
+table.selector#target-selector input {
+	width: 2em;
+}
+table.selector#target-selector input.wider {
+	width: 3em;
+}
 @media screen and (max-width: 960px) {
 	div.control-panel {
 		width: 360px;
@@ -103,6 +129,12 @@ div.font-tester table td.active {
 <div class="font-tester">
 	<div class="control-panel">
 		<div>
+			<table class="selector" id="target-selector">
+				<tr><th>Test target:</th></tr>
+				<tr><td id="test-font-sizes">Test font sizes from <input id="font-size-start" value="10"/> px through <input id="font-size-end" value="32" /> px step <input id="font-size-step" value="2" /> px <br/>where weight is <input id="font-weight-fixed" value="400" /> </td></tr>
+				<tr><td id="test-font-weights" class="active">Test font weights from <input id="font-weight-start" value="100"/> through <input id="font-weight-end" value="900" /> step <input id="font-weight-step" value="100" /><br/>where size is <input id="font-size-fixed" class="wider" value="1em" /></td></tr>
+			</table>
+			<br/>
 			<table class="selector" id="family-selector">
 				<tr><th colspan="3">Font family:</th></tr>
 				<tr>
