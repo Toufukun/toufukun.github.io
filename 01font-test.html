@@ -3,7 +3,7 @@ layout: default
 title: 字体测试
 ---
 
-<script type="text/javascript" src="{{ "/script/jquery-2.2.3.min.js" | prepend: site.baseurl }}"></script>
+<script type="text/javascript" src="{{ '/script/jquery-2.2.3.min.js' | prepend: site.baseurl }}"></script>
 
 <script>
 var defaultTestText="Test 测试123中文ABC汉字abg(xyz)(w/o)（国果） This is a sample text. 这是·测试文本。①②⑨ 한국어 あさひ・テレビ／骨曜将葛，地玄系、片海示。";
@@ -39,15 +39,15 @@ function regeneratePlayground(){
 	if ($('#test-font-sizes').hasClass('active')) {
 		var l=parseInt($('#font-size-start').val()), r=parseInt($('#font-size-end').val()), s=parseInt($('#font-size-step').val());
 		var f=$('#font-weight-fixed').val();
-		if (l<r){
+		if (l && r && s && l>0 && r>0 && r>=l && s>=1){
 			for (var i=l;i<=r;i+=s){
 				$('.playground').append('<p style="font-size: '+i+'px; font-weight:'+f+';">'+i+' '+text+'</p>');
 			}
 		}
 	} else if ($('#test-font-weights').hasClass('active')){
 		var l=parseInt($('#font-weight-start').val()), r=parseInt($('#font-weight-end').val()), s=parseInt($('#font-weight-step').val());
-		var f=$('#font-size-fixed').val();
-		if (l<r){
+		var f=parseInt($('#font-size-fixed').val());
+		if (l && r && s && f && l>0 && r>0 && r>=l && s>=1 && f>=1){
 			for (var i=l;i<=r;i+=s){
 				$('.playground').append('<p style="font-weight: '+i+'; font-size:'+f+';">'+i+' '+text+'</p>');
 			}

@@ -17,6 +17,10 @@ body:lang(zh-CN) {
 	font-family: $zh-CN-font-family;
 }
 
+blockquote:lang(zh) {
+	font-style: normal;
+}
+
 @font-face {
     font-family: chinese-font;
     src: local(Source Han Sans SC), local("SourceHanSansSC-Regular"),
@@ -105,4 +109,9 @@ div.excerpt {
 	overflow: hidden;
 	text-overflow: ellipsis;
 	white-space: nowrap;
+}
+
+blockquote {
+	font-size: inherit;
+	letter-spacing: inherit;
 }

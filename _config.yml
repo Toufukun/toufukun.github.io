@@ -9,7 +9,7 @@
 title: 豆腐君的又一个博客
 email: toufukun233(a)gmail.com
 description: > # this means to ignore newlines until "baseurl:"
-  豆腐君的又一个博客，可能会更新，更可能不会，所以请不要抱任何期待。
+  一个不怎么纯的“纯”技术博客。可能会更新，更可能不会，所以请不要抱任何期待。
 copyright: >
   Copyright (C) 2015-2016 Toufukun, all rights reserved.
 baseurl: "" # the subpath of your site, e.g. /blog
